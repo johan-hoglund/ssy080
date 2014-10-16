@@ -1,0 +1,10 @@
+
+k=0:1:8191
+w=2*pi*0.01*k/8192
+t = 0:0.01:81.91
+x=square(t)
+plot(t,x)
+dft=fft(x);
+plot(w,abs(dft))
+
+y = lsim(sys, x, t)

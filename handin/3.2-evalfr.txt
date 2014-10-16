@@ -1,0 +1,17 @@
+>> evalfr(sys,1)
+
+ans =
+
+    0.1476
+
+>> evalfr(sys,3)
+
+ans =
+
+    0.1642
+
+>> evalfr(sys,5)
+
+ans =
+
+    0.1376
