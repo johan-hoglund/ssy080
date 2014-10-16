@@ -1,0 +1,13 @@
+T=1;
+w=2*pi/T;
+M=200;
+t=T*(0:M-1)/M;
+y=zeros(1,200);
+
+ind=50;
+
+C= 1:(ind*2 + 1);
+for a = 1:(ind*2 + 1)
+    k = a - inf - 1;
+    syms p;
+    C(a) = 1/T *(int(exp(-1i)))
