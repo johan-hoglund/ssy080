@@ -6,7 +6,7 @@ den=[1 2 10 9];
 sys=tf(num,den);
 bode(sys);
 
-pzmap(sys);
+%pzmap(sys);
 
 t=0:0.01:81.92;
 
