@@ -1,0 +1,1231 @@
+#LyX 2.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
+\begin_document
+\begin_header
+\textclass article
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\use_mhchem 1
+\use_mathdots 1
+\cite_engine basic
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Laboration i Signaler och System
+\end_layout
+
+\begin_layout Date
+2014-10-19
+\end_layout
+
+\begin_layout Author
+Fredrik Lundberg 881110-4937
+\begin_inset Newline newline
+\end_inset
+
+Johan Höglund 880910-4857
+\end_layout
+
+\begin_layout Section*
+3.1 Fourierseriens uppbyggnad
+\end_layout
+
+\begin_layout Standard
+Fourierkoefficienten C
+\begin_inset script subscript
+
+\begin_layout Plain Layout
+k
+\end_layout
+
+\end_inset
+
+för interfallet -30 till 30, med matlab.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+T=1;
+\end_layout
+
+\begin_layout Plain Layout
+
+w=2*pi/T;
+\end_layout
+
+\begin_layout Plain Layout
+
+M=200;
+\end_layout
+
+\begin_layout Plain Layout
+
+t=T*(0:M-1)/M;
+\end_layout
+
+\begin_layout Plain Layout
+
+y=zeros(1,200);
+\end_layout
+
+\begin_layout Plain Layout
+
+ind=30; %intervall
+\end_layout
+
+\begin_layout Plain Layout
+
+C= 1:(ind*2 + 1);
+\end_layout
+
+\begin_layout Plain Layout
+
+for a = 1:(ind*2 + 1)
+\end_layout
+
+\begin_layout Plain Layout
+
+	k = a - ind - 1;
+\end_layout
+
+\begin_layout Plain Layout
+
+	syms p;
+\end_layout
+
+\begin_layout Plain Layout
+
+	% Addera båda integralerna
+\end_layout
+
+\begin_layout Plain Layout
+
+	C(a) = 1/T *(int(exp(-1i*p*w*k) , 0 , T/2 ) ...
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+			+ int ( -exp(-1i*p*w*k) , T/2 , T));
+\end_layout
+
+\begin_layout Plain Layout
+
+end
+\end_layout
+
+\begin_layout Plain Layout
+
+for k = -ind:ind
+\end_layout
+
+\begin_layout Plain Layout
+
+	a = k+ind + 1;
+\end_layout
+
+\begin_layout Plain Layout
+
+	y = y + C(a)*exp(1i*w*t*k);
+\end_layout
+
+\begin_layout Plain Layout
+
+end
+\end_layout
+
+\begin_layout Plain Layout
+
+plot(t,y);
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename 3-1-plot.png
+	width 100text%
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Plot av sinusvågor kombinerade till fyrkantsvåg
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section*
+3.2 Linjära system och sinusar
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+%Num = (s+0.1)(s+10) blir s^2+10.1s+1 
+\end_layout
+
+\begin_layout Plain Layout
+
+num=[1 10.1 1];
+\end_layout
+
+\begin_layout Plain Layout
+
+%Den = (s+1)(s^2+s+9) blir s^3+2s^2+10s+9 
+\end_layout
+
+\begin_layout Plain Layout
+
+den=[1 2 10 9];
+\end_layout
+
+\begin_layout Plain Layout
+
+sys=tf(num,den);
+\end_layout
+
+\begin_layout Plain Layout
+
+bode(sys);
+\end_layout
+
+\begin_layout Plain Layout
+
+pzmap(sys);
+\end_layout
+
+\begin_layout Plain Layout
+
+t=0:0.01:81.92;
+\end_layout
+
+\begin_layout Plain Layout
+
+x1=sin(1*t);
+\end_layout
+
+\begin_layout Plain Layout
+
+x2=sin(3*t);
+\end_layout
+
+\begin_layout Plain Layout
+
+x3=sin(5*t);
+\end_layout
+
+\begin_layout Plain Layout
+
+y1=lsim(sys,x1,t);
+\end_layout
+
+\begin_layout Plain Layout
+
+y2=lsim(sys,x2,t);
+\end_layout
+
+\begin_layout Plain Layout
+
+y3=lsim(sys,x3,t);
+\end_layout
+
+\begin_layout Plain Layout
+
+%verifiera ekvationen y(t) = g(ω)sin(ωt + φ(ω)) beräkna g(ω) och φ(ω) för
+\end_layout
+
+\begin_layout Plain Layout
+
+% ω=3
+\end_layout
+
+\begin_layout Plain Layout
+
+gw = (abs(evalfr(sys,3i)));
+\end_layout
+
+\begin_layout Plain Layout
+
+fi = (angle(evalfr(sys,3i)));
+\end_layout
+
+\begin_layout Plain Layout
+
+y = gw*sin(3*t + fi);
+\end_layout
+
+\begin_layout Plain Layout
+
+% Plotta ut y2 och y
+\end_layout
+
+\begin_layout Plain Layout
+
+plot(y2);
+\end_layout
+
+\begin_layout Plain Layout
+
+hold on;
+\end_layout
+
+\begin_layout Plain Layout
+
+plot(y);
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename 3.2poler_nollor.png
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Pol och nollställeplacering för överföringsfunktion G(s)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename 3.2bode.png
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+I bodediagrammet syns det att den maximala förstärkningen för systemet ligger
+ runt 
+\begin_inset Formula $\omega$
+\end_inset
+
+ = 3 rad/s
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename 3.2x1.png
+	width 75text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename 3.2x2.png
+	width 75text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename 3.2x3.png
+	width 75text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Signalerna 
+\begin_inset Formula $x_{1}$
+\end_inset
+
+, 
+\begin_inset Formula $x_{2}$
+\end_inset
+
+, 
+\begin_inset Formula $x_{3}$
+\end_inset
+
+genom systemet G(s), röd är insignal
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+För verifiering av 
+\begin_inset Formula $y(t)=g(\omega)sin(\omega t+\varphi(\omega))$
+\end_inset
+
+ beräkna 
+\begin_inset Formula $g(\omega)$
+\end_inset
+
+ och 
+\begin_inset Formula $\varphi(\omega)$
+\end_inset
+
+ för 
+\begin_inset Formula $\omega=3$
+\end_inset
+
+ fick vi detta
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename 3.2veri.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Man ser tydligt att ekvationen stämmer överens när den försvagats.
+\end_layout
+
+\begin_layout Section*
+3.3 Periodiska insignaler och DFT
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename 3.3square.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Fyrkantsvågen
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+%generera en fyrkantigvåg
+\end_layout
+
+\begin_layout Plain Layout
+
+t=0:0.01:81.92;
+\end_layout
+
+\begin_layout Plain Layout
+
+x = square(t);
+\end_layout
+
+\begin_layout Plain Layout
+
+plot(t,x);
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Man ser att den är udda
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+for k = 1:2:5
+\end_layout
+
+\begin_layout Plain Layout
+
+	ko = @(k) (-1i * 2) / (pi * k);
+\end_layout
+
+\begin_layout Plain Layout
+
+    B = @(k) 2 * ko(k) / (-1i);
+\end_layout
+
+\begin_layout Plain Layout
+
+    B(k)
+\end_layout
+
+\begin_layout Plain Layout
+
+end
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Generera 3 nollskilda fourierkoefficienter, k blir 
+\begin_inset Formula $\omega$
+\end_inset
+
+ = 1, 2, 3 i loopen.
+ B(k) kommer ge oss de teoretiska värdena.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+% plotta DFT 
+\end_layout
+
+\begin_layout Plain Layout
+
+Fs=100;% 100 Hz
+\end_layout
+
+\begin_layout Plain Layout
+
+N=8192;
+\end_layout
+
+\begin_layout Plain Layout
+
+for k = 1:N
+\end_layout
+
+\begin_layout Plain Layout
+
+    w(k) = (2 * pi * Fs * k) / N;
+\end_layout
+
+\begin_layout Plain Layout
+
+end
+\end_layout
+
+\begin_layout Plain Layout
+
+y = abs(fft(x)); 
+\end_layout
+
+\begin_layout Plain Layout
+
+plot(w,y);
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Plotta DFT
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename 3.3dft.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Tabellen visar B(k) värdena, Teoretiska togs fram med koden ovan och de
+ praktiska togs fram med ekvationen från häftet:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+B=\frac{2|X[k_{0}]|}{N}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Tabular
+<lyxtabular version="3" rows="4" columns="3">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\omega$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Teoretisk
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Praktisk
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1.2732
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1.2701
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+2
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.4244
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.4147
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+3
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.2546
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.2386
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Applicera nu vår fyrkantssignal på systemet:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+G(s)=\frac{(s+0.1)(s+10)}{(s+1)(s^{2}+s+9)}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Med koden:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+num = [1 10.1 1];
+\end_layout
+
+\begin_layout Plain Layout
+
+den = [1 2 10 9];
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+sys = tf(num,den);
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+y = lsim(num,den);
+\end_layout
+
+\begin_layout Plain Layout
+
+plot(w,abs(fft(y)));
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename 3.3freqspek.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Vi kan beräkna koefficienterna för 
+\begin_inset Formula $\omega=3$
+\end_inset
+
+ med:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+G(3j)=\frac{(3j+0.1)(3j+10)}{(3j+1)((3j)^{2}+3j+9}=\frac{-8+30.3j}{-9+3j}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Tabular
+<lyxtabular version="3" rows="4" columns="2">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\omega$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Praktiska
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1.1022 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+3
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1.3356
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+5
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.1505
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section*
+3.4 Notch-filter
+\end_layout
+
+\begin_layout Standard
+För att skapa ett täljarpolynom med komplex-konjugerade nollställen i 
+\begin_inset Formula $\omega=\{0,1,5,7,9\}$
+\end_inset
+
+ ställer vi upp nedanstående uttryck:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+(s)(s-1)(s+1)(s-5)(s+5)(s-7)(s+7)(s-9)(s+9)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Genom att använda funktionen 
+\emph on
+poly
+\emph default
+ i Matlab får vi ut att ovanstående motsvaras av nedanstående polynom:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+s^{4}+156s^{3}+7374s^{2}+106444s+99225
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Plottar vi ovanstående uttryck som ett system i ett bodediagram ser vi att
+ vi som önskat får nollställen i 1, 5, 7 samt 9.
+ Då x-axeln i Matlabs bodediagram är logaritmisk ser vi dock aldrig att
+ systemet ger en utsläckning av insignalen för 
+\begin_inset Formula $\omega=0$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename 3-4-numerator-system.png
+	width 75text%
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Bodediagram för täljarpolynomet
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Polynomet ovan motsvarar totalt nio nollställen, för att eliminera förstärkninge
+n ovanför 
+\begin_inset Formula $\omega=9$
+\end_inset
+
+ krävs således nio poler, skall vi däremot nå en dämpning om 60 dB per dekad
+ krävs totalt elva poler.
+ Vi lägger till samtliga poler i 
+\begin_inset Formula $s=-4$
+\end_inset
+
+ och får följande nämnare:
+\begin_inset Formula 
+\begin{eqnarray*}
+ & (s-4)(s-4)(s-4)(s-4)(s-4)(s-4)(s-4)(s-4)(s-4)(s-4)(s-4)
+\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Plottar vi bodediagrammet ser vi att den sökta dämpningen om 60 dB per dekad
+ för frekvenser 
+\begin_inset Formula $\omega\geqslant9$
+\end_inset
+
+ har uppnåtts.
+ Eftersom vi vill att en signal med frekvens 
+\begin_inset Formula $\omega=3$
+\end_inset
+
+ skall passera utan att amplituden förändras, söker vi först den amplitud
+ som system f.n.
+ svarar med vid 
+\begin_inset Formula $\omega=3$
+\end_inset
+
+: 
+\emph on
+evalfr(sys, 
+\begin_inset Formula $3rad/s$
+\end_inset
+
+)
+\begin_inset Formula $=0.0045$
+\end_inset
+
+
+\emph default
+.
+ En skalning av täljarpolynomet om
+\emph on
+ 
+\begin_inset Formula $\frac{1}{0.0045}\approx222.22$
+\end_inset
+
+
+\emph default
+ krävs således för att eliminera den dämpning som skrev vid 
+\begin_inset Formula $\omega=3$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename 3-4-skalat-system.png
+	width 100text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Bodediagram för systemet efter skalning
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document
