@@ -15,20 +15,16 @@ end
 %B(k) ger teoretiska värden
 
 % plotta DFT
-Fs=100;% 100 Hz
-N=8192;
-for k = 1:N
-    w(k) = (2 * pi * Fs * k) / N;
+Fs=100; % 100 Hz
+N=8193;
+for k = 1:8193
+    l = k-1;
+    w(k) = (2 * pi * 100 * l) / 8192;
 end
-y = abs(fft(x)); 
-%plot(w,y);
+
+y = abs(fft(x));
+plot(w,y);
 
 
-num = [1 10.1 1];
-den = [1 2 10 9];
-
-sys=tf(num, den);
-
-y = lsim(sys, x, t);
-%plot(w,abs(fft(y)));
-abs(fft(y));
+%TODO
+% praktiska beräknas av B = 2|X[k0]|/N

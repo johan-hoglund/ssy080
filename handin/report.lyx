@@ -400,7 +400,19 @@ Pol och nollställeplacering för överföringsfunktion G(s)
 \begin_layout Standard
 I bodediagrammet syns det att den maximala förstärkningen för systemet ligger
  runt ω = 3 rad/s.
- Signalerna x1, x2, x3 genom systemet G(s).
+ Signalerna 
+\begin_inset Formula $x_{1}$
+\end_inset
+
+, 
+\begin_inset Formula $x_{2}$
+\end_inset
+
+, 
+\begin_inset Formula $x_{3}$
+\end_inset
+
+genom systemet G(s).
  Se figurerna för dessa.
  Där den röda är insignalen
 \end_layout
@@ -415,7 +427,22 @@ I bodediagrammet syns det att den maximala förstärkningen för systemet ligger
 \end_layout
 
 \begin_layout Standard
-X1
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+\begin_inset Formula $x_{1}$
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -428,7 +455,10 @@ X1
 \end_layout
 
 \begin_layout Standard
-X2
+\begin_inset Formula $x_{2}$
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -441,7 +471,10 @@ X2
 \end_layout
 
 \begin_layout Standard
-X3
+\begin_inset Formula $x_{3}$
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -464,6 +497,481 @@ Man ser tydligt att ekvationen stämmer överens när den försvagats
 
 \begin_layout Section*
 3.3 Periodiska insignaler och DFT
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename 3.3square.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Fyrkantsvågen
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+%generera en fyrkantigvåg
+\end_layout
+
+\begin_layout Plain Layout
+
+t=0:0.01:81.92;
+\end_layout
+
+\begin_layout Plain Layout
+
+x = square(t);
+\end_layout
+
+\begin_layout Plain Layout
+
+plot(t,x);
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Man ser att den är udda
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+for k = 1:2:5
+\end_layout
+
+\begin_layout Plain Layout
+
+	ko = @(k) (-1i * 2) / (pi * k);
+\end_layout
+
+\begin_layout Plain Layout
+
+    B = @(k) 2 * ko(k) / (-1i);
+\end_layout
+
+\begin_layout Plain Layout
+
+    B(k)
+\end_layout
+
+\begin_layout Plain Layout
+
+end
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Generera 3 nollskilda fourierkoefficienter, k blir ω = 1, 2, 3 i loopen.
+ B(k) kommer ge oss de teoretiska värdena.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+% plotta DFT 
+\end_layout
+
+\begin_layout Plain Layout
+
+Fs=100;% 100 Hz
+\end_layout
+
+\begin_layout Plain Layout
+
+N=8192;
+\end_layout
+
+\begin_layout Plain Layout
+
+for k = 1:N
+\end_layout
+
+\begin_layout Plain Layout
+
+    w(k) = (2 * pi * Fs * k) / N;
+\end_layout
+
+\begin_layout Plain Layout
+
+end
+\end_layout
+
+\begin_layout Plain Layout
+
+y = abs(fft(x)); 
+\end_layout
+
+\begin_layout Plain Layout
+
+plot(w,y);
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Plotta DFT
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename 3.3dft.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Tabellen visar B(k) värdena, Teoretiska togs fram med koden ovan och de
+ praktiska togs fram med ekvationen från häftet:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+B=\frac{2|X[k_{0}]|}{N}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Tabular
+<lyxtabular version="3" rows="4" columns="3">
+<features rotate="0" tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+ω
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Teoretisk
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Praktisk
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1.2732
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1.2701
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+2
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.4244
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.4147
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+3
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.2546
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.2386
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Applicera nu vår fyrkantssignal på systemet:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+G(s)=\frac{(s+0.1)(s+10)}{(s+1)(s^{2}+s+9)}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Med koden:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+num = [1 10.1 1];
+\end_layout
+
+\begin_layout Plain Layout
+
+den = [1 2 10 9];
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+sys = tf(num,den);
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+y = lsim(num,den);
+\end_layout
+
+\begin_layout Plain Layout
+
+plot(w,abs(fft(y)));
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename 3.3freqspek.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Vi kan beräkna koefficienterna för ω = 3 med:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+G(3j)=\frac{(3j+0.1)(3j+10)}{(3j+1)((3j)^{2}+3j+9}=\frac{-8+30.3j}{-9+3j}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Tabular
+<lyxtabular version="3" rows="4" columns="2">
+<features rotate="0" tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+ω
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Praktiska
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1.1022 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+3
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1.3356
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+5
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.1505
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section*
