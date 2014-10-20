@@ -18,13 +18,13 @@ y1=lsim(sys,x1,t);
 y2=lsim(sys,x2,t);
 y3=lsim(sys,x3,t);
 
-%verifiera ekvationen y(t) = g(?)sin(?t + ?(?)) beräkna g(?) och ?(?) för
+%verifiera ekvationen y(t) = g(?)sin(?t + ?(?)) berï¿½kna g(?) och ?(?) fï¿½r
 % ?=3
 
 gw = (abs(evalfr(sys,3i)));
 fi = (angle(evalfr(sys,3i)));
 y = gw*sin(3*t + fi);
 
-plot(y2);
+plot(x3(1:2000));
 hold on;
-plot(y);
+plot(y3(1:2000), 'r');
